@@ -1,4 +1,4 @@
-import { Component, OnInit , EventEmitter, Output} from "@angular/core";
+import { Component, OnInit , EventEmitter, Output, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/login.servivio";
 import { LoginModel, PassModel, UserModel } from "../../model/login.model";
@@ -7,6 +7,8 @@ import { debug } from "node:console";
 import { response } from "express";
 import { responseInterceptor } from "http-proxy-middleware";
 import { resolve } from "node:path"; 
+import { RecaptchaComponent } from "ng-recaptcha";  // 👈 IMPORTANTE
+
 
 
 
@@ -16,11 +18,13 @@ import { resolve } from "node:path";
     styleUrls: ['./login.component.css']
 })
 export class PagLoginComponent implements OnInit{
-    
+  @ViewChild('captchaElem') recaptchaRef!: RecaptchaComponent;  // 👈 REFERENCIA    
   isLoggedIn: boolean = false;  
   loginInput: string = 'wcmore.93@gmail.com';
   passwordInput: string = 'Miclave24';
   NewpassInput: string = '';
+  captchaResponse: string | null = null;
+
     
 
     // Propiedades para el formulario de registro7
@@ -32,15 +36,30 @@ export class PagLoginComponent implements OnInit{
     regPregunta: string = '';
     regRespuesta: string = '';  
 
+
     constructor(
         private authService: AuthService, private router: Router,
       )  { }
+
+
 
 
         ngOnInit(): void {
                
 
         }
+
+      resolved(captchaResponse: string | null) {
+        this.captchaResponse = captchaResponse;
+        //console.log("Token captcha:", captchaResponse);
+      }
+
+      resetCaptcha() {
+        this.captchaResponse = null;
+        if (this.recaptchaRef) {
+          this.recaptchaRef.reset();  // 👈 Reinicia el captcha
+        }
+      }      
 
         recuperaUser(){
           const usertxt = this.loginInput;
@@ -102,6 +121,12 @@ export class PagLoginComponent implements OnInit{
         }
     
         onLogin() {
+
+        if (!this.captchaResponse) {
+          alert("Debes completar el CAPTCHA");
+          return;
+        }          
+          
           // Aquí puedes utilizar localStorage
           
           console.log('Estad de isAuthenticated: ',this.authService.isAuthenticated())
@@ -110,8 +135,9 @@ export class PagLoginComponent implements OnInit{
 
           const usertxt = this.loginInput;
           const passtxt = this.passwordInput;
+          const captchatoken = this.captchaResponse
         
-          const loginModel: LoginModel = { user: usertxt, pass: passtxt };
+          const loginModel: LoginModel = { user: usertxt, pass: passtxt , captchatoken: captchatoken};
           console.log('Enviando datos de login...', loginModel);
         
           this.authService.login(loginModel).subscribe(
@@ -175,6 +201,7 @@ export class PagLoginComponent implements OnInit{
                     showCancelButton: false,
                     timer: 5000 // en milisegundos
                   });
+                          this.resetCaptcha(); // 👈 reiniciar captcha si falla login
             }
             
           );    

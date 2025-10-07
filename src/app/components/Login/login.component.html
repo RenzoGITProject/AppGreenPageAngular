@@ -7,12 +7,12 @@
 <div class="container ">
   <div class="row bg-light mt-5">
       <div class="col-md-6 d-flex justify-content-center align-items-center">
-          <img src="assets/img/Logo.png" alt="login-icon" style="height: 20rem;">
+          <img src="assets/img/logo_dos_ong.png" alt="login-icon" style="height: 20rem;">
       </div>
       <div class="col-md-6">
           <div class="bg-light p-4 mb-5">
               <div class="text-center p-4 mb-5">
-                  <h1 style="color: rgba(12, 122, 40, 0.932);"><strong>INICIO DE SESIÓN</strong></h1>
+                  <h1 style="color: rgba(4, 190, 17, 0.932);"><strong>INICIO DE SESIÓN</strong></h1>
               </div>
               <div class="text-center mt-5">
                   <!--<a href="">¿Aún eres nuevo aquí?</a>-->
@@ -32,12 +32,23 @@
                   <input type="password" class="form-control" placeholder="Contraseña" id="password"
                       [(ngModel)]="passwordInput">
               </div>
-              <div class="text-right mb-5">
-                  <a href="javascript:void(0)" class="text-decoration-none" (click)="openRecuperaModal()">Recuperar contraseña?</a>
+              <div class="d-flex justify-content-between align-items-center mb-5">
+                <!-- Captcha -->
+                <re-captcha
+                  #captchaElem
+                  siteKey="6LdAyN0rAAAAAGsev3WnqAqP5_87MevE7JddSyoe"
+                  (resolved)="resolved($event)">
+                </re-captcha>
+
+                <!-- Recuperar contraseña -->
+                <a href="javascript:void(0)" class="text-decoration-none ms-3" (click)="openRecuperaModal()">
+                  Recuperar contraseña?
+                </a>
               </div>
+                          
               <div class="mt-5">
                   <button type="button" class="btn btn-primary rounded-2 w-100"
-                      style="background-color: #87DC72; border: 0px;" (click)="onLogin()">
+                      style="background-color: #04BE11; border: 0px;" (click)="onLogin()">
                       <strong>INGRESAR</strong>
                   </button>
               </div>

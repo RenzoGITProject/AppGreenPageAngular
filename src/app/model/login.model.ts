@@ -1,6 +1,7 @@
 export interface LoginModel {
     user: string;
     pass: string;
+    captchatoken: string;
 }
 
 export interface UserModel{

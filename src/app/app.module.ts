@@ -31,6 +31,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 //import {ComponentsComponent}
 import { ComponentsComponent } from './GestionUsuarios/components/components.component';
 import { VerusuariosComponent } from './components/verusuarios/verusuarios.component';
+import { RecaptchaModule, ReCaptchaV3Service } from 'ng-recaptcha';
 
 
 //import { DataTablesModule } from 'angular-datatables';
@@ -51,7 +52,8 @@ import { VerusuariosComponent } from './components/verusuarios/verusuarios.compo
     AppRoutingModule,
     FormsModule/*,
     DataTablesModule*/
-    , HttpClientModule
+    , HttpClientModule,
+    RecaptchaModule
   ],
   providers: [
     provideClientHydration(),

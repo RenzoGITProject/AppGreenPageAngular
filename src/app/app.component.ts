@@ -21,10 +21,9 @@ export class AppComponent implements OnInit{
   hubConnection: HubConnection;// = new HubConnectionBuilder().withUrl("http://localhost:5048/timeHub").build(); // Inicialización de la conexión  
 
 
-
   constructor(public authService: AuthService, private router: Router) {
     this.hubConnection = new HubConnectionBuilder()
-    .withUrl('http://localhost:5048/timeHub') // URL de tu backend con SignalR
+    .withUrl('http://localhost:5048/timeHub') // URL del backend con SignalR
     .build();
   }
 
